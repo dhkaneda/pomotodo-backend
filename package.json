@@ -1,0 +1,20 @@
+{
+  "name": "h11mkr-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon index.js"
+  },
+  "author": "dhkaneda",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jest": "^27.0.1",
+    "mongoose": "^5.12.11",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
+  }
+}
