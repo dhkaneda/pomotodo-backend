@@ -108,6 +108,27 @@ Response Body:
   }
 }
 ```
+---
+As a user I want to update the order of my todos
+
+    Given I have saved several todos
+    When I change the order of them
+    Then the order of the todo is saved so that when I revisit, it has peristed
+
+PATCH /api/todo-data
+204 No content
+
+Request Body: 
+```json
+{
+  order: [
+    "d6b2e215-f095-402e-bf31-f75154a69329",
+    "e61cf002-5fa4-41a2-9ace-a7bf4a284d33",
+    "9b314719-0500-4e2f-a0f8-171b96766741"
+  ]
+}
+```
+---
 
 As as user, I want to update a todo when I complete it
 
