@@ -18,4 +18,22 @@ module.exports = class TodoDataController {
       res.status(500).json({ error });
     }
   }
+
+  static async updateOrder(req, res) {
+    try {
+      await todoDataService.updateOrder(req.body);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+
+  static async updateTodo(req, res) {
+    try {
+      await todoDataService.updateTodo(req.params.id, req.body);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
 };

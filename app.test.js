@@ -11,7 +11,7 @@ describe("Test public routes", () => {
     await TodoData.deleteMany({});
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     mongoose.connection.close();
   });
 
@@ -88,4 +88,82 @@ describe("Test public routes", () => {
           });
       });
   });
+
+  it('should update the order of todos', async () => {
+    const todo1 = {
+      name: "Add entry",
+      desc: "Personal log",
+      dateCreated: "1622077232207",
+      tags: ["caput"],
+      pomodoroCount: 0,
+    };
+    const todo2 = {
+      name: "Rep building",
+      desc: "Physical training",
+      dateCreated: "1622077232209",
+      tags: ["manu"],
+      pomodoroCount: 0,
+    };
+
+    let todoId1;
+    let todoId2;
+
+    return todoDataService.addTodo(todo1)
+      .then((response) => {
+        todoId1 = response.order[0]
+        return todoDataService.addTodo(todo2);
+      })
+      .then((response) => {
+        todoId2 = response.order[1]
+        return request(app)
+          .patch("/api/todo-data")
+          .send({
+            order: [todoId2, todoId1]
+          })
+          .expect(204)
+          .then(() => {
+            return todoDataService.getTodos()
+              .then(({ order }) => {
+                expect(Array.from(order)).toEqual([todoId2, todoId1]);
+              })
+          })
+      })
+
+  })
+  
+  it("should update a todo by id", () => {
+    const todo1 = {
+      name: "Add entry",
+      desc: "Personal log",
+      dateCreated: "1622077232207",
+      tags: ["caput"],
+      pomodoroCount: 0,
+    };
+
+    let todoId1;
+
+    return todoDataService.addTodo(todo1)
+      .then((response) => {
+        todoId1 = response.order[0]
+      })
+      .then(() => {
+        return request(app)
+          .patch(`/api/todo-data/${todoId1}`)
+          .send(
+            {
+              "name": "New Name",
+              "desc": "New Desc"
+            }
+          )
+          .expect(204)
+          .then(() => {
+            return todoDataService.getTodos();
+          })
+          .then((todoData) => {
+            expect(todoData.todos[todoId1].name).toEqual("New Name");
+            expect(todoData.todos[todoId1].desc).toEqual("New Desc");
+          })
+      }) 
+  })
+
 });

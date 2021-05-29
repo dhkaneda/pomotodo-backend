@@ -26,7 +26,7 @@ module.exports = class TodoDataService {
       }
       return response;
     } catch (error) {
-      console.log(error);
+      return error;
     }
   }
 
@@ -35,7 +35,29 @@ module.exports = class TodoDataService {
       const response = await TodoData.findOne({});
       return response;
     } catch (error) {
-      console.log(error);
+      return error;
+    }
+  }
+
+  static async updateOrder(options) {
+    try {
+      let response = await TodoData.findOneAndUpdate({}, options)
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async updateTodo(id, options) {
+    try {
+      let existingTodo = await TodoData.findOne({});
+      for (let key in options) {
+        existingTodo.todos[id][key] = options[key];
+      }
+      let response = await TodoData.findOneAndUpdate({}, existingTodo);
+      return response;
+    } catch (error) {
+      return error;
     }
   }
 };

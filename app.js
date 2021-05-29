@@ -26,6 +26,8 @@ module.exports = function App() {
 
   app.post("/api/todo-data", todoData.addTodo);
   app.get("/api/todo-data", todoData.getTodos);
+  app.patch("/api/todo-data", todoData.updateOrder);
+  app.patch("/api/todo-data/:id", todoData.updateTodo)
 
   return app;
 };
