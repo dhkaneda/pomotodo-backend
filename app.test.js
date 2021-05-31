@@ -1,17 +1,17 @@
-const App = require("./app");
 const request = require("supertest");
 const mongoose = require("mongoose");
 const TodoData = require("./models/TodoData");
 const todoDataService = require("./services/TodoDataService");
-
+const App = require("./app");
 const app = new App();
+
 
 describe("Test public routes", () => {
   beforeEach(async () => {
     await TodoData.deleteMany({});
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     mongoose.connection.close();
   });
 
@@ -58,7 +58,7 @@ describe("Test public routes", () => {
         expect(returnedTodo.dateCreated).toEqual("1622077232207");
       });
   });
-
+  
   it("should return all the todos saved, with the order", () => {
     const todo1 = {
       name: "Add entry",
@@ -89,7 +89,7 @@ describe("Test public routes", () => {
       });
   });
 
-  it("should update the order of todos", async () => {
+  it("should update the order of todos", () => {
     const todo1 = {
       name: "Add entry",
       desc: "Personal log",
@@ -163,4 +163,44 @@ describe("Test public routes", () => {
           });
       });
   });
+
+  it("should delete a todo by id", () => {
+    const todo1 = {
+      name: "Add entry",
+      desc: "Personal log",
+      dateCreated: "1622077232207",
+      tags: ["caput"],
+      pomodoroCount: 0,
+    };
+    const todo2 = {
+      name: "Rep building",
+      desc: "Physical training",
+      dateCreated: "1622077232209",
+      tags: ["manu"],
+      pomodoroCount: 0,
+    };
+
+    let todoId1;
+    let todoId2;
+
+    return todoDataService
+      .addTodo(todo1)
+      .then((response) => {
+        todoId1 = response.order[0];
+        return todoDataService.addTodo(todo2);
+      })
+      .then((response) => {
+        todoId2 = response.order[1];
+        return request(app)
+          .delete(`/api/todo-data/${todoId1}`)
+          .expect(204)
+          .then(() => {
+            return todoDataService.getTodos();
+          })
+          .then(({ order, todos }) => {
+            expect(order.length).toEqual(1);
+            expect(todos[todoId1]).toBeFalsy();
+          })
+      })
+  })
 });

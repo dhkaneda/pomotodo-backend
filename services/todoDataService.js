@@ -41,8 +41,8 @@ module.exports = class TodoDataService {
 
   static async updateOrder(options) {
     try {
-      let response = await TodoData.findOneAndUpdate({}, options)
-      return response;
+      await TodoData.findOneAndUpdate({}, options)
+      // return response;
     } catch (error) {
       return error;
     }
@@ -54,8 +54,20 @@ module.exports = class TodoDataService {
       for (let key in options) {
         existingTodo.todos[id][key] = options[key];
       }
-      let response = await TodoData.findOneAndUpdate({}, existingTodo);
-      return response;
+      await TodoData.findOneAndUpdate({}, existingTodo);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async deleteTodo(id) {
+    try {
+      let existingTodo = await TodoData.findOne({});
+      existingTodo.order = existingTodo.order.filter((orderId) => {
+        return orderId !== id
+      });
+      delete existingTodo.todos[id];
+      await TodoData.findOneAndUpdate({}, existingTodo);
     } catch (error) {
       return error;
     }

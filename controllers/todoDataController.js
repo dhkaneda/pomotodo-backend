@@ -36,4 +36,13 @@ module.exports = class TodoDataController {
       res.status(500).json({ error });
     }
   }
+
+  static async deleteTodo(req, res) {
+    try {
+      await todoDataService.deleteTodo(req.params.id);
+      res.status(204).end();
+    } catch(error) {
+      res.status(500).json({ error });
+    }
+  }
 };
