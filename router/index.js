@@ -14,8 +14,11 @@ router.get("/health", (req, res) => {
 
 router.post("/api/todo-data", todoData.addTodo);
 router.get("/api/todo-data", todoData.getTodos);
+
 router.patch("/api/todo-data", todoData.updateOrder);
 router.patch("/api/todo-data/:id", todoData.updateTodo);
+
+router.delete("/api/todo-data/completed", todoData.deleteCompletedTodos);
 router.delete("/api/todo-data/:id", todoData.deleteTodo);
 
 module.exports = router;

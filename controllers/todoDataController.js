@@ -39,8 +39,17 @@ module.exports = class TodoDataController {
 
   static async deleteTodo(req, res) {
     try {
-      await todoDataService.deleteTodo(req.params.id);
-      res.status(204).end();
+      const response = await todoDataService.deleteTodo(req.params.id);
+      res.status(204).send(response);
+    } catch(error) {
+      res.status(500).json({ error });
+    }
+  }
+
+  static async deleteCompletedTodos(req, res) {
+    try {
+      const response = await todoDataService.deleteCompletedTodos();
+      res.status(204).send(response);
     } catch(error) {
       res.status(500).json({ error });
     }

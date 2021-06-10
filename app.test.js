@@ -15,7 +15,7 @@ describe("Test public routes", () => {
     mongoose.connection.close();
   });
 
-  it("should respond with a 200 at the /health path", () => {
+  it("should respond with a 200 at /health", () => {
     return request(app).get("/health").expect(200);
   });
 

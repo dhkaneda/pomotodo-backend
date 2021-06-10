@@ -72,4 +72,22 @@ module.exports = class TodoDataService {
       return error;
     }
   }
+
+  static async deleteCompletedTodos() {
+    try {
+      console.log('yeet');
+      let existingTodo = await TodoData.findOne({});
+      existingTodo.order = existingTodo.order.filter((orderId) => {
+        return !existingTodo.todos[orderId].completed;
+      });
+      for (let id in existingTodo.todos) {
+        if (existingTodo.todos[id].completed) {
+          delete existingTodo.todos[id];
+        }
+      }
+      await TodoData(existingTodo).save();
+    } catch (error) {
+      return error;
+    }
+  }
 };
