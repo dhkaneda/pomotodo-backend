@@ -9,7 +9,7 @@ try {
     useFindAndModify: false 
   });
 } catch(error) {
-  error => console.log(`erroror in DB connection ${err}`)
+  error => console.log(`error in DB connection ${err}`)
 }
 
 module.exports = mongoose;

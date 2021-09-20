@@ -75,7 +75,6 @@ module.exports = class TodoDataService {
 
   static async deleteCompletedTodos() {
     try {
-      console.log('yeet');
       let existingTodo = await TodoData.findOne({});
       existingTodo.order = existingTodo.order.filter((orderId) => {
         return !existingTodo.todos[orderId].completed;
