@@ -41,8 +41,7 @@ module.exports = class TodoDataService {
 
   static async updateOrder(options) {
     try {
-      await TodoData.findOneAndUpdate({}, options)
-      // return response;
+      await TodoData.findOneAndUpdate({}, options);
     } catch (error) {
       return error;
     }

@@ -34,7 +34,7 @@ describe("Test public routes", () => {
         const todoId = body.order[0];
         const returnedTodo = body.todos[todoId];
 
-        // example response body
+        // Example response body
         // {
         //   "order": [
         //     "57f78108-4704-41a9-989b-3721ceedfad1"

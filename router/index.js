@@ -4,12 +4,17 @@ const router = express.Router();
 const todoData = require("../controllers/todoDataController");
 const TodoData = require("../models/TodoData");
 
-if (TodoData.findOne({}) === undefined) {
-  TodoData({ order: [], todos: {} }).save();
-}
+/* If the server is starting for the very first time, the collection
+will be empty - this will populate the db with a placeholder tododata
+item. */ 
+TodoData.find({}).then((data) => {
+  if (data.length === 0) {
+    TodoData({ order: [], todos: { init: 1 } }).save();
+  }
+})
 
 router.get("/health", (req, res) => {
-  res.status(200).end();
+  res.status(200).send("healthy");
 });
 
 router.post("/api/todo-data", todoData.addTodo);
